@@ -1,0 +1,106 @@
+<div id="root"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
+
+<script type="text/babel">
+  class TodosApp extends React.Component {
+  	render() {
+      const datas = [
+        {content : 'finish doc',completed : 'false' },
+        {content : 'submit pr',completed : 'true' },
+        {content : 'nag dan to review',completed : 'true' },
+        {content : 'react',completed : 'true' }
+      ];
+
+    	return (
+      	<div>
+          <TodoHeader headerName="我的待辦清單" todoNumber={3} />
+          <hr />
+          <TodoHeader headerName="物慾清單" todoNumber={99} />
+          <hr />
+          <TodoHeader headerName="工作清單" todoNumber={0} />
+          <hr />
+          <InputField placeholder="新增待辦事項" />
+          <br />
+          <InputField placeholder="搜尋待辦事項" />
+          <hr />
+          <TodoList todos={datas}/>
+        </div>
+      );
+    }
+  }
+
+ 
+  class TodoHeader extends React.Component {
+  	render() {
+    	const { headerName, todoNumber } = this.props;
+
+    	return (
+      	<div>
+        	<h1>{headerName}</h1>
+          <small>{todoNumber !== 0 ? `${todoNumber} 項未完成待辦事項` : `你已完成了所有工作`}</small>
+        </div>
+      );
+    }
+  }
+
+
+
+  class InputField extends React.Component {
+    render() {
+   
+      return (
+        <input  {...this.props}  />
+      )
+    }
+  }
+
+  class TodoList extends React.Component {
+  	render() {
+       const todos = this.props.todos;
+        const listItems = todos.map((item)=>
+            <TodoItem  key={item.content.toString()} value = {item}/>
+        );
+       return (
+            <ul>{listItems}</ul>
+       );
+    }
+  }
+
+  class TodoItem extends React.Component {
+    render() {
+      const content = this.props.value.content;
+      const completed = this.props.value.completed;
+      return (
+        <li>
+          {content} , {completed}
+        </li>
+      )
+    }
+  }
+
+  TodoHeader.defaultProps = {
+    headerName: '預設的待辦清單',
+    todoNumber: 0
+  };
+
+  TodoHeader.propTypes = {
+    headerName: React.PropTypes.string,
+    todoNumber: React.PropTypes.number
+  };
+
+  TodosApp.propTypes = {
+    datas: React.PropTypes.shape({
+        content: React.PropTypes.isRequired,
+        completed: React.PropTypes.isRequired
+    })
+  };
+
+ReactDOM.render(
+  <TodosApp/>,
+  document.getElementById('root')
+);
+
+</script>

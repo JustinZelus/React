@@ -1,0 +1,76 @@
+<div id="root"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
+
+<script type="text/babel">
+
+    
+
+   function Blog(props) {
+        const sidebar = (
+            <ul>
+            {props.posts.map((post) =>
+                <li key={post.id}>
+                {post.title}
+                </li>
+            )}
+            </ul>
+        );
+
+        const content = props.posts.map((post) =>
+            <div key={post.id}>
+            <h3>{post.title}</h3>
+            <p>{post.content}</p>
+            </div>
+        );
+        return (
+            <div>
+            {sidebar}
+            <hr />
+            {content}
+            </div>
+        );
+    }   
+ 
+const posts = [
+  {id: 1, title: 'Hello World', content: 'Welcome to learning React!'},
+  {id: 2, title: 'Installation', content: 'You can install React from npm.'}
+];
+
+function ListItem(props) {
+  return <li>{props.value}</li>;
+}
+
+function NumberList(props) {
+    const numbers = props.numbers;
+    const listItems = numbers.map((number) =>
+        <ListItem key = {number.toString()}
+                  value = {number}/>   
+    );
+    return (
+        <ul>
+          {listItems}
+        </ul>    
+    )
+}
+
+function NumberList(props) {
+    const numbers = props.numbers;
+    return (
+        <ul>
+            {numbers.map((number)=>
+                <ListItem key = {number.toString()}
+                  value = {number}/> 
+            )}
+        </ul>
+    )
+}
+
+
+ReactDOM.render(
+  <Blog posts={posts} />,
+  document.getElementById('root')
+);
+</script>
