@@ -1,0 +1,99 @@
+<div id="root"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
+
+<script type="text/babel">
+
+    class TodoItem extends React.Component {
+        render() {
+            var k = this.props.children.id + 1;
+            return(
+                <li key={k}>{this.props.children}</li>
+            )
+        }
+    }
+
+    class TodoItems extends React.Component {
+        render(){
+            var displayItems= this.props.items.map((item) => (
+                <TodoItem key={item.id}>{item.data}</TodoItem>
+            ));
+
+            return(
+                <div>
+                    <ul>
+                        {displayItems}
+                    </ul>    
+                </div>
+            )
+        }
+    }
+
+    class AddTodoForm extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                todoText:"nothing to do yo~"
+            };
+
+            //this.handleTodoChange = this.handleTodoChange.bind(this);
+            //this.handleAddTodoItem = this.handleAddTodoItem.bind(this);
+        }
+        handleTodoChange = (e) => {
+            this.setState({todoText: e.target.value});
+        }
+        handleAddTodoItem = (e) => {
+           // console.log(this.state.todoText);
+           this.props.addItem(this.state.todoText);
+        }
+        render(){
+            return(
+                <div>
+                    <input type="text" 
+                           value={this.state.todoText}
+                           onChange={this.handleTodoChange}/>
+                     &nbsp;&nbsp;&nbsp;
+                    <button onClick={this.handleAddTodoItem}>Add Todo Item</button>
+                </div>
+            )
+        }
+    }
+
+    class TodoList extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                todoItems:[
+                    { id : 1, data: "學習react state用法"},
+                    { id : 2, data: "實作一個範例"}
+                ]
+            };
+           // this.handleAddTodoItem = this.handleAddTodoItem.bind(this);
+        }
+        handleAddTodoItem = (todoText) => {
+            var items = this.state.todoItems;
+            items.push({
+                id: items.length +1,
+                data: todoText
+            });
+            this.setState({todoItems : items});
+        }
+        render(){
+            return(
+                <div className="todoList">
+                    <h1>React</h1>
+                    <h2>今日學習項目</h2>
+                    <TodoItems items={this.state.todoItems} />
+                    <AddTodoForm addItem={this.handleAddTodoItem}/>
+                </div>
+            )
+        }
+    }
+
+    ReactDOM.render(
+        <TodoList/>,
+        document.getElementById('root')
+    )
+</script>
